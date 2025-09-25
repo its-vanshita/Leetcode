@@ -9,6 +9,24 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
+
+      // Approach -1 (using map)
+    unordered_map<ListNode*,bool> m;
+
+        ListNode* temp=head;
+
+        while(temp!=NULL){
+            if(m[temp]==true){
+                return true;
+            }
+
+            m[temp]=true;
+            temp=temp->next;
+        }
+        return false;
+
+        
+        // Approach - 02 (using (tortoise and hare))
          ListNode* slow=head;
          ListNode* fast=head;
 
