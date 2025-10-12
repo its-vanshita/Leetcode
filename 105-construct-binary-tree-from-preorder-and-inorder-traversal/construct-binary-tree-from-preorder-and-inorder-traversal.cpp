@@ -11,18 +11,30 @@
  */
 class Solution {
 public:
-    int getIndexInorder(vector<int> inorder, int element){
-       
-       for(int i=0;i<inorder.size();i++){
-        if(inorder[i]==element){
-            return i;
-        }
+    void createMapping(unordered_map<int,int> &valMap,vector<int> inorder)
+    {
+       for(int i=0;i<inorder.size();i++)
+       {
+        int element = inorder[i];
+        int index = i;
+        valMap[element]=index;
        }
-       return -1;
     }
 
 
-    TreeNode* constructTree(vector<int>& preorder,vector<int> &inorder, int &preorderIndex, int inorderStart, int inorderEnd,int size)
+
+    // int getIndexInorder(vector<int> inorder, int element){
+       
+    //    for(int i=0;i<inorder.size();i++){
+    //     if(inorder[i]==element){
+    //         return i;
+    //     }
+    //    }
+    //    return -1;
+    // }
+
+
+    TreeNode* constructTree(unordered_map<int,int> &valMap,vector<int>& preorder,vector<int> &inorder, int &preorderIndex, int inorderStart, int inorderEnd,int size)
     {
        //Base-cases
        if(preorderIndex>=size){
@@ -40,10 +52,10 @@ public:
        TreeNode* root = new TreeNode(element);
 
        // Find index of element inside inorder
-       int elementIndexInsideInorder = getIndexInorder(inorder,element);
+       int elementIndexInsideInorder = valMap[element];
 
-       root->left = constructTree(preorder,inorder,preorderIndex,inorderStart,elementIndexInsideInorder-1,size);
-       root->right = constructTree(preorder,inorder,preorderIndex,elementIndexInsideInorder+1,inorderEnd,size);
+       root->left = constructTree(valMap,preorder,inorder,preorderIndex,inorderStart,elementIndexInsideInorder-1,size);
+       root->right = constructTree(valMap,preorder,inorder,preorderIndex,elementIndexInsideInorder+1,inorderEnd,size);
 
        return root;
     }
@@ -54,8 +66,10 @@ public:
      int inorderStart = 0;
      int inorderEnd = inorder.size()-1;
      int size = inorder.size();
+     unordered_map<int,int> valMap;
+     createMapping(valMap,inorder);
 
-     TreeNode* root = constructTree(preorder,inorder,preorderIndex,inorderStart,inorderEnd,size); 
+     TreeNode* root = constructTree(valMap,preorder,inorder,preorderIndex,inorderStart,inorderEnd,size); 
      return root;  
     }
     
