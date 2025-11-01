@@ -13,9 +13,13 @@ class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
         vector<int> ans;
-        if(root==NULL){
-             return ans;
+
+        //edge-case
+        if(root==NULL)
+        {
+            return ans;
         }
+
         ans.push_back(root->val);
         vector<int> left=preorderTraversal(root->left);
         vector<int> right=preorderTraversal(root->right);
